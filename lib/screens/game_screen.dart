@@ -30,10 +30,8 @@ class _GameScreenState extends State<GameScreen> {
     try {
       final questions = await _questionService.loadQuestions('genesis');
       final shuffled = _questionService.shuffleQuestions(questions);
-      // Shuffle answer choices for each question
-      final shuffledWithChoices = shuffled.map((q) => q.shuffleChoices()).toList();
 
-      gameService.startGame(shuffledWithChoices, 'player_1', 'genesis');
+      gameService.startGame(shuffled, 'player_1', 'genesis');
 
       setState(() {
         _isLoading = false;
@@ -57,8 +55,8 @@ class _GameScreenState extends State<GameScreen> {
 
     gameService.answerQuestion(selectedIndex);
 
-    // Wait 1.5 seconds then move to next question or results
-    Future.delayed(const Duration(milliseconds: 1500), () {
+    // Wait 2 seconds then move to next question or results
+    Future.delayed(const Duration(milliseconds: 2000), () {
       if (!mounted) return;
 
       if (gameService.isGameComplete) {
@@ -100,20 +98,12 @@ class _GameScreenState extends State<GameScreen> {
               : Consumer<GameService>(
                   builder: (context, gameService, child) {
                     final question = gameService.currentQuestion;
-                    if (question == null || gameService.isGameComplete) {
-                      // Navigate to results screen immediately
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (mounted) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ResultsScreen(),
-                            ),
-                          );
-                        }
-                      });
+                    if (question == null) {
                       return const Center(
-                        child: CircularProgressIndicator(color: Colors.white),
+                        child: Text(
+                          'No questions available',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       );
                     }
 

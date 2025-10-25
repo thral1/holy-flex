@@ -40,21 +40,4 @@ class Question {
       'difficulty': difficulty,
     };
   }
-
-  /// Creates a new Question with shuffled choices
-  Question shuffleChoices() {
-    final correctAnswer = choices[correctIndex];
-    final shuffledChoices = List<String>.from(choices)..shuffle();
-    final newCorrectIndex = shuffledChoices.indexOf(correctAnswer);
-
-    return Question(
-      id: id,
-      text: text,
-      choices: shuffledChoices,
-      correctIndex: newCorrectIndex,
-      explanation: explanation,
-      category: category,
-      difficulty: difficulty,
-    );
-  }
 }
