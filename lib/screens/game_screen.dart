@@ -91,28 +91,9 @@ class _GameScreenState extends State<GameScreen> {
                 builder: (context, gameService, child) {
                   final question = gameService.currentQuestion;
 
-                  // If no question and game is complete, go to results
-                  if (question == null && gameService.isGameComplete) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (mounted) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ResultsScreen(),
-                          ),
-                        );
-                      }
-                    });
-                    return const Center(
-                      child: CircularProgressIndicator(color: AppTheme.cyanAccent),
-                    );
-                  }
-
-                  // If no question at all (error state), show loading
+                  // If no question available, just show loading (navigation happens in _handleAnswer)
                   if (question == null) {
-                    return const Center(
-                      child: CircularProgressIndicator(color: AppTheme.cyanAccent),
-                    );
+                    return const SizedBox.shrink();
                   }
 
                   return Column(
