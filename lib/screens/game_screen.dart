@@ -73,11 +73,14 @@ class _GameScreenState extends State<GameScreen> {
           ),
         );
       } else {
-        // Reset state FIRST, then advance to next question
-        gameService.nextQuestion();
+        // CRITICAL: Reset state BEFORE nextQuestion to prevent color bleeding
         setState(() {
           _selectedIndex = null;
           _showingFeedback = false;
+        });
+        // Now advance to next question and update cached question
+        gameService.nextQuestion();
+        setState(() {
           _currentQuestion = gameService.currentQuestion;
         });
       }
