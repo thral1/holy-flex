@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../services/game_service.dart';
 import '../services/question_service.dart';
 import '../models/question.dart';
+import '../theme/app_theme.dart';
 import 'results_screen.dart';
 
 class GameScreen extends StatefulWidget {
@@ -67,11 +68,12 @@ class _GameScreenState extends State<GameScreen> {
           ),
         );
       } else {
-        setState(() {
-          _selectedIndex = null;
-          _showingFeedback = false;
-        });
+        // Reset state FIRST, then advance to next question
+        _selectedIndex = null;
+        _showingFeedback = false;
         gameService.nextQuestion();
+        // Force a rebuild with clean state
+        setState(() {});
       }
     });
   }
@@ -79,47 +81,36 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.indigo.shade700,
-              Colors.deepPurple.shade900,
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: _isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(color: Colors.white),
-                )
-              : Consumer<GameService>(
-                  builder: (context, gameService, child) {
-                    final question = gameService.currentQuestion;
-                    if (question == null) {
-                      return const Center(
-                        child: Text(
-                          'No questions available',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }
-
-                    return Column(
-                      children: [
-                        _buildHeader(gameService),
-                        _buildTimerBar(gameService),
-                        const SizedBox(height: 40),
-                        _buildQuestionCard(question),
-                        const SizedBox(height: 40),
-                        _buildAnswerButtons(question, gameService),
-                      ],
+      backgroundColor: AppTheme.darkBackground,
+      body: SafeArea(
+        child: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(color: AppTheme.cyanAccent),
+              )
+            : Consumer<GameService>(
+                builder: (context, gameService, child) {
+                  final question = gameService.currentQuestion;
+                  if (question == null) {
+                    return const Center(
+                      child: Text(
+                        'No questions available',
+                        style: TextStyle(color: AppTheme.white),
+                      ),
                     );
-                  },
-                ),
-        ),
+                  }
+
+                  return Column(
+                    children: [
+                      _buildHeader(gameService),
+                      _buildProgressBar(gameService),
+                      const SizedBox(height: 40),
+                      _buildQuestionCard(question),
+                      const SizedBox(height: 40),
+                      _buildAnswerButtons(question, gameService),
+                    ],
+                  );
+                },
+              ),
       ),
     );
   }
@@ -137,21 +128,25 @@ class _GameScreenState extends State<GameScreen> {
             'Question $currentIndex of $totalQuestions',
             style: const TextStyle(
               fontSize: 18,
-              color: Colors.white,
+              color: AppTheme.white,
               fontWeight: FontWeight.bold,
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: AppTheme.cyanAccent.withOpacity(0.2),
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: AppTheme.cyanAccent,
+                width: 1,
+              ),
             ),
             child: Text(
               '${gameService.currentSession!.totalScore} pts',
               style: const TextStyle(
                 fontSize: 18,
-                color: Colors.white,
+                color: AppTheme.cyanAccent,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -161,23 +156,33 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 
-  Widget _buildTimerBar(GameService gameService) {
+  Widget _buildProgressBar(GameService gameService) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      height: 8,
+      height: 12,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(4),
+        color: AppTheme.progressBarInactive,
+        borderRadius: BorderRadius.circular(6),
       ),
       child: FractionallySizedBox(
         alignment: Alignment.centerLeft,
         widthFactor: gameService.progressPercentage,
         child: Container(
           decoration: BoxDecoration(
-            color: gameService.remainingSeconds <= 5
-                ? Colors.red
-                : Colors.green,
-            borderRadius: BorderRadius.circular(4),
+            gradient: LinearGradient(
+              colors: [
+                AppTheme.cyanAccent,
+                AppTheme.cyanAccent.withOpacity(0.7),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.cyanAccent.withOpacity(0.5),
+                blurRadius: 8,
+                spreadRadius: 1,
+              ),
+            ],
           ),
         ),
       ),
@@ -187,25 +192,22 @@ class _GameScreenState extends State<GameScreen> {
   Widget _buildQuestionCard(Question question) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.darkBackground,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
+        border: Border.all(
+          color: AppTheme.cyanAccent.withOpacity(0.3),
+          width: 2,
+        ),
       ),
       child: Text(
         question.text,
         style: const TextStyle(
-          fontSize: 22,
+          fontSize: 24,
           fontWeight: FontWeight.w600,
-          color: Colors.black87,
-          height: 1.4,
+          color: AppTheme.white,
+          height: 1.5,
         ),
         textAlign: TextAlign.center,
       ),
@@ -238,21 +240,27 @@ class _GameScreenState extends State<GameScreen> {
     int correctIndex,
     GameService gameService,
   ) {
-    Color buttonColor = Colors.white;
-    Color textColor = Colors.black87;
+    Color buttonColor = AppTheme.darkBackground;
+    Color textColor = AppTheme.white;
+    Color borderColor = AppTheme.mediumGray;
+    Color letterBgColor = AppTheme.cyanAccent;
 
     if (_showingFeedback && _selectedIndex == index) {
       // User selected this answer
       if (index == correctIndex) {
-        buttonColor = Colors.green;
-        textColor = Colors.white;
+        buttonColor = AppTheme.correctAnswer.withOpacity(0.2);
+        borderColor = AppTheme.correctAnswer;
+        letterBgColor = AppTheme.correctAnswer;
       } else {
-        buttonColor = Colors.red;
-        textColor = Colors.white;
+        buttonColor = AppTheme.wrongAnswer.withOpacity(0.2);
+        borderColor = AppTheme.wrongAnswer;
+        letterBgColor = AppTheme.wrongAnswer;
       }
     } else if (_showingFeedback && index == correctIndex) {
       // Show correct answer
-      buttonColor = Colors.green.shade100;
+      buttonColor = AppTheme.correctAnswer.withOpacity(0.1);
+      borderColor = AppTheme.correctAnswer;
+      letterBgColor = AppTheme.correctAnswer;
     }
 
     return MouseRegion(
@@ -269,16 +277,9 @@ class _GameScreenState extends State<GameScreen> {
           color: buttonColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: Colors.white.withOpacity(0.5),
+            color: borderColor,
             width: 2,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
         ),
         child: Row(
           children: [
@@ -286,14 +287,14 @@ class _GameScreenState extends State<GameScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: Colors.indigo.shade700,
+                color: letterBgColor,
                 shape: BoxShape.circle,
               ),
               child: Center(
                 child: Text(
                   String.fromCharCode(65 + index), // A, B, C, D
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: AppTheme.darkBackground,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

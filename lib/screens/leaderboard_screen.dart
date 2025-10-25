@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/leaderboard_service.dart';
 import '../models/leaderboard_entry.dart';
+import '../theme/app_theme.dart';
 
 class LeaderboardScreen extends StatefulWidget {
   const LeaderboardScreen({super.key});
@@ -45,146 +46,247 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       appBar: AppBar(
         title: const Text('Leaderboard'),
         centerTitle: true,
-        backgroundColor: Colors.purple.shade700,
+        backgroundColor: AppTheme.darkBackground,
+        foregroundColor: AppTheme.cyanAccent,
         elevation: 0,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.purple.shade700,
-              Colors.deepPurple.shade900,
-            ],
-          ),
-        ),
-        child: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator(color: Colors.white),
-              )
-            : _entries.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.leaderboard_outlined,
-                          size: 80,
-                          color: Colors.white.withOpacity(0.5),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'No scores yet!',
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white.withOpacity(0.7),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Play the game to see your score here',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white.withOpacity(0.5),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : Column(
+      backgroundColor: AppTheme.darkBackground,
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(color: AppTheme.cyanAccent),
+            )
+          : _entries.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Icon(
+                        Icons.leaderboard_outlined,
+                        size: 80,
+                        color: AppTheme.cyanAccent.withOpacity(0.5),
+                      ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'GENESIS LEVEL',
+                      Text(
+                        'No scores yet!',
                         style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 2,
+                          fontSize: 24,
+                          color: AppTheme.white.withOpacity(0.7),
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Top ${_entries.length} Players',
+                        'Play the game to see your score here',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white.withOpacity(0.7),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: _entries.length,
-                          itemBuilder: (context, index) {
-                            return _buildLeaderboardEntry(
-                              _entries[index],
-                              index + 1,
-                            );
-                          },
+                          color: AppTheme.white.withOpacity(0.5),
                         ),
                       ),
                     ],
                   ),
+                )
+              : Column(
+                  children: [
+                    const SizedBox(height: 16),
+                    const Text(
+                      'GENESIS LEVEL',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.cyanAccent,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Top ${_entries.length} Players',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppTheme.white.withOpacity(0.7),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Podium for top 3
+                    if (_entries.length >= 3) _buildPodium(),
+
+                    const SizedBox(height: 24),
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: _entries.length > 3 ? _entries.length - 3 : 0,
+                        itemBuilder: (context, index) {
+                          return _buildLeaderboardEntry(
+                            _entries[index + 3],
+                            index + 4,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+    );
+  }
+
+  Widget _buildPodium() {
+    if (_entries.length < 3) return const SizedBox();
+
+    final first = _entries[0];
+    final second = _entries.length > 1 ? _entries[1] : null;
+    final third = _entries.length > 2 ? _entries[2] : null;
+
+    return Container(
+      height: 200,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // 2nd place
+          if (second != null)
+            Expanded(
+              child: _buildPodiumPlace(
+                entry: second,
+                rank: 2,
+                color: Colors.grey,
+                height: 120,
+              ),
+            ),
+          const SizedBox(width: 8),
+          // 1st place
+          Expanded(
+            child: _buildPodiumPlace(
+              entry: first,
+              rank: 1,
+              color: Colors.amber,
+              height: 160,
+            ),
+          ),
+          const SizedBox(width: 8),
+          // 3rd place
+          if (third != null)
+            Expanded(
+              child: _buildPodiumPlace(
+                entry: third,
+                rank: 3,
+                color: Colors.brown.shade300,
+                height: 100,
+              ),
+            ),
+        ],
       ),
     );
   }
 
+  Widget _buildPodiumPlace({
+    required LeaderboardEntry entry,
+    required int rank,
+    required Color color,
+    required double height,
+  }) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        // Avatar circle with rank
+        Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: color,
+            border: Border.all(
+              color: AppTheme.cyanAccent,
+              width: 3,
+            ),
+          ),
+          child: Center(
+            child: Text(
+              '$rank',
+              style: const TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.darkBackground,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          entry.username,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: AppTheme.white,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          '${entry.score}',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
+        ),
+        const SizedBox(height: 8),
+        // Podium block
+        Container(
+          height: height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                color,
+                color.withOpacity(0.6),
+              ],
+            ),
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(8),
+            ),
+            border: Border.all(
+              color: AppTheme.cyanAccent.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: Center(
+            child: Icon(
+              Icons.emoji_events,
+              color: AppTheme.darkBackground.withOpacity(0.3),
+              size: 40,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildLeaderboardEntry(LeaderboardEntry entry, int rank) {
-    Color rankColor;
-    IconData? medalIcon;
-
-    if (rank == 1) {
-      rankColor = Colors.amber;
-      medalIcon = Icons.emoji_events;
-    } else if (rank == 2) {
-      rankColor = Colors.grey.shade300;
-      medalIcon = Icons.emoji_events;
-    } else if (rank == 3) {
-      rankColor = Colors.brown.shade300;
-      medalIcon = Icons.emoji_events;
-    } else {
-      rankColor = Colors.white.withOpacity(0.7);
-    }
-
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(rank <= 3 ? 0.95 : 0.85),
+        color: AppTheme.darkBackground,
         borderRadius: BorderRadius.circular(16),
-        border: rank <= 3
-            ? Border.all(color: rankColor, width: 2)
-            : null,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        border: Border.all(
+          color: AppTheme.mediumGray.withOpacity(0.3),
+          width: 1,
+        ),
       ),
       child: Row(
         children: [
-          // Rank/Medal
+          // Rank
           SizedBox(
             width: 50,
-            child: rank <= 3
-                ? Icon(
-                    medalIcon,
-                    color: rankColor,
-                    size: 36,
-                  )
-                : Text(
-                    '#$rank',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade600,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+            child: Text(
+              '#$rank',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.cyanAccent,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
           const SizedBox(width: 16),
 
@@ -198,15 +300,15 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: AppTheme.white,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   _formatDate(entry.completedAt),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
-                    color: Colors.grey.shade600,
+                    color: AppTheme.mediumGray,
                   ),
                 ),
               ],
@@ -217,15 +319,19 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.purple.shade700,
+              color: AppTheme.cyanAccent.withOpacity(0.2),
               borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: AppTheme.cyanAccent,
+                width: 1,
+              ),
             ),
             child: Text(
               '${entry.score}',
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: AppTheme.cyanAccent,
               ),
             ),
           ),

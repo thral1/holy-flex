@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/game_service.dart';
 import '../services/leaderboard_service.dart';
+import '../theme/app_theme.dart';
 import 'leaderboard_screen.dart';
-import 'home_screen.dart';
+import 'main_navigation.dart';
 
 class ResultsScreen extends StatefulWidget {
   const ResultsScreen({super.key});
@@ -52,18 +53,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.purple.shade700,
-              Colors.deepPurple.shade900,
-            ],
-          ),
-        ),
-        child: SafeArea(
+      backgroundColor: AppTheme.darkBackground,
+      body: SafeArea(
           child: Consumer<GameService>(
             builder: (context, gameService, child) {
               final session = gameService.currentSession;
@@ -92,13 +83,19 @@ class _ResultsScreenState extends State<ResultsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         'GAME COMPLETE!',
                         style: TextStyle(
                           fontSize: 42,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: AppTheme.cyanAccent,
                           letterSpacing: 2,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 20,
+                              color: AppTheme.cyanAccent.withOpacity(0.5),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 60),
@@ -108,15 +105,12 @@ class _ResultsScreenState extends State<ResultsScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 24),
                         padding: const EdgeInsets.all(32),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppTheme.darkBackground,
                           borderRadius: BorderRadius.circular(24),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              blurRadius: 20,
-                              offset: const Offset(0, 10),
-                            ),
-                          ],
+                          border: Border.all(
+                            color: AppTheme.cyanAccent,
+                            width: 2,
+                          ),
                         ),
                         child: Column(
                           children: [
@@ -124,21 +118,21 @@ class _ResultsScreenState extends State<ResultsScreen> {
                               'TOTAL SCORE',
                               style: TextStyle(
                                 fontSize: 18,
-                                color: Colors.grey,
+                                color: AppTheme.lightGray,
                                 letterSpacing: 2,
                               ),
                             ),
                             const SizedBox(height: 8),
                             Text(
                               '$totalScore',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 64,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.purple.shade700,
+                                color: AppTheme.cyanAccent,
                               ),
                             ),
                             const SizedBox(height: 24),
-                            Divider(color: Colors.grey.shade300),
+                            Divider(color: AppTheme.mediumGray),
                             const SizedBox(height: 24),
 
                             // Stats
@@ -175,13 +169,13 @@ class _ResultsScreenState extends State<ResultsScreen> {
                       _buildActionButton(
                         icon: Icons.replay,
                         label: 'Play Again',
-                        color: Colors.green,
+                        color: AppTheme.cyanAccent,
                         onTap: () {
                           gameService.resetGame();
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
+                              builder: (context) => const MainNavigation(),
                             ),
                             (route) => false,
                           );
@@ -194,7 +188,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                       _buildActionButton(
                         icon: Icons.leaderboard,
                         label: 'View Leaderboard',
-                        color: Colors.orange,
+                        color: AppTheme.correctAnswer,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -211,13 +205,13 @@ class _ResultsScreenState extends State<ResultsScreen> {
                       _buildActionButton(
                         icon: Icons.home,
                         label: 'Home',
-                        color: Colors.blue,
+                        color: AppTheme.mediumGray,
                         onTap: () {
                           gameService.resetGame();
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
+                              builder: (context) => const MainNavigation(),
                             ),
                             (route) => false,
                           );
@@ -230,7 +224,6 @@ class _ResultsScreenState extends State<ResultsScreen> {
             },
           ),
         ),
-      ),
     );
   }
 
@@ -242,7 +235,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
           label,
           style: const TextStyle(
             fontSize: 16,
-            color: Colors.black87,
+            color: AppTheme.lightGray,
           ),
         ),
         Container(

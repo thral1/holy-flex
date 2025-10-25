@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/game_service.dart';
-import 'screens/home_screen.dart';
+import 'screens/main_navigation.dart';
+import 'theme/app_theme.dart';
 
 void main() {
   runApp(const HolyFlexApp());
@@ -17,12 +18,8 @@ class HolyFlexApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Holy Flex',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.purple,
-          fontFamily: 'Helvetica',
-          useMaterial3: true,
-        ),
-        home: const HomeScreen(),
+        theme: AppTheme.darkTheme,
+        home: const MainNavigation(),
       ),
     );
   }

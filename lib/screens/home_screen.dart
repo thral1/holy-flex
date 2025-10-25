@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'game_screen.dart';
 import 'leaderboard_screen.dart';
+import '../theme/app_theme.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -8,35 +9,27 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.darkBackground,
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.purple.shade700,
-              Colors.deepPurple.shade900,
-            ],
-          ),
-        ),
         child: SafeArea(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // App Title
-                const Text(
+                // App Title with glow effect from Figma
+                Text(
                   'HOLY FLEX',
-                  style: TextStyle(
-                    fontSize: 56,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    letterSpacing: 4,
+                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
                     shadows: [
                       Shadow(
-                        blurRadius: 10,
-                        color: Colors.black45,
-                        offset: Offset(2, 2),
+                        blurRadius: 20,
+                        color: AppTheme.cyanAccent.withOpacity(0.5),
+                        offset: const Offset(0, 0),
+                      ),
+                      const Shadow(
+                        blurRadius: 40,
+                        color: AppTheme.cyanAccent,
+                        offset: Offset(0, 0),
                       ),
                     ],
                   ),
@@ -57,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                   context,
                   icon: Icons.play_arrow_rounded,
                   label: 'Play Genesis Level',
-                  color: Colors.green,
+                  color: AppTheme.cyanAccent,
                   onTap: () {
                     Navigator.push(
                       context,
