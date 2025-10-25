@@ -55,8 +55,8 @@ class _GameScreenState extends State<GameScreen> {
 
     gameService.answerQuestion(selectedIndex);
 
-    // Wait 2 seconds then move to next question or results
-    Future.delayed(const Duration(milliseconds: 2000), () {
+    // Wait 1.5 seconds then move to next question or results
+    Future.delayed(const Duration(milliseconds: 1500), () {
       if (!mounted) return;
 
       if (gameService.isGameComplete) {
@@ -67,11 +67,11 @@ class _GameScreenState extends State<GameScreen> {
           ),
         );
       } else {
+        gameService.nextQuestion();
         setState(() {
           _selectedIndex = null;
           _showingFeedback = false;
         });
-        gameService.nextQuestion();
       }
     });
   }
