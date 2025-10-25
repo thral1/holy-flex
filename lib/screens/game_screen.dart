@@ -51,6 +51,9 @@ class _GameScreenState extends State<GameScreen> {
   void _handleAnswer(int selectedIndex, GameService gameService) {
     if (_showingFeedback) return;
 
+    // Single delay constant for feedback display
+    const feedbackDelayMs = 2000;
+
     setState(() {
       _selectedIndex = selectedIndex;
       _showingFeedback = true;
@@ -59,8 +62,8 @@ class _GameScreenState extends State<GameScreen> {
     gameService.answerQuestion(selectedIndex);
     final isGameComplete = gameService.isGameComplete;
 
-    // Wait 2 seconds then move to next question or results
-    Future.delayed(const Duration(milliseconds: 2000), () {
+    // Wait for feedback delay, then transition
+    Future.delayed(const Duration(milliseconds: feedbackDelayMs), () {
       if (!mounted) return;
 
       if (isGameComplete) {
@@ -73,19 +76,13 @@ class _GameScreenState extends State<GameScreen> {
           ),
         );
       } else {
-        // CRITICAL: Reset state and wait before advancing to next question
+        // CRITICAL: Reset state BEFORE advancing to prevent color bleeding
         _selectedIndex = null;
         _showingFeedback = false;
+        gameService.nextQuestion();
+        _currentQuestion = gameService.currentQuestion;
+        // Force rebuild with clean state
         setState(() {});
-
-        // Small delay to ensure UI updates with clean state before advancing
-        Future.delayed(const Duration(milliseconds: 100), () {
-          if (!mounted) return;
-          gameService.nextQuestion();
-          setState(() {
-            _currentQuestion = gameService.currentQuestion;
-          });
-        });
       }
     });
   }
