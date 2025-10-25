@@ -61,6 +61,8 @@ class _GameScreenState extends State<GameScreen> {
       if (!mounted) return;
 
       if (gameService.isGameComplete) {
+        // Game is complete, navigate to results immediately
+        gameService.endGame();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
