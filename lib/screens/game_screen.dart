@@ -96,19 +96,20 @@ class _GameScreenState extends State<GameScreen> {
             : Consumer<GameService>(
                 builder: (context, gameService, child) {
                   final question = gameService.currentQuestion;
-                  final displayQuestion = question ?? _currentQuestion;
 
-                  if (question != null && question != _currentQuestion) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (!mounted) return;
-                      setState(() {
-                        _currentQuestion = question;
-                      });
-                    });
+                  // Always update to the latest question if it exists
+                  if (question != null) {
+                    _currentQuestion = question;
                   }
 
+                  // Always use _currentQuestion - never show null/empty state
+                  final displayQuestion = _currentQuestion;
+
+                  // Safety check - should never be null if game loaded properly
                   if (displayQuestion == null) {
-                    return const SizedBox.shrink();
+                    return const Center(
+                      child: CircularProgressIndicator(color: AppTheme.cyanAccent),
+                    );
                   }
 
                   return Column(
