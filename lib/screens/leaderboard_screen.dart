@@ -158,7 +158,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               entry: first,
               rank: 1,
               color: Colors.amber,
-              height: 120,
+              height: 115,
             ),
           ),
           const SizedBox(width: 8),
