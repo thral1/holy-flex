@@ -52,7 +52,7 @@ class _GameScreenState extends State<GameScreen> {
     if (_showingFeedback) return;
 
     // Single delay constant for feedback display - controls how long answer is highlighted
-    const feedbackDelayMs = 2000;
+    const feedbackDelayMs = 1400;
 
     setState(() {
       _selectedIndex = selectedIndex;

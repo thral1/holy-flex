@@ -15,6 +15,7 @@ class GameService extends ChangeNotifier {
   int _remainingSeconds = questionTimeSeconds;
   DateTime? _questionStartTime;
   bool _isAnswered = false;
+  Question? _overrideQuestion;
 
   GameSession? get currentSession => _currentSession;
   List<Question>? get questions => _questions;
@@ -23,6 +24,10 @@ class GameService extends ChangeNotifier {
   bool get isAnswered => _isAnswered;
 
   Question? get currentQuestion {
+    if (_overrideQuestion != null) {
+      return _overrideQuestion;
+    }
+
     if (_currentSession == null ||
         _questions == null ||
         _currentSession!.currentQuestionIndex >= _questions!.length) {
@@ -44,6 +49,7 @@ class GameService extends ChangeNotifier {
       levelId: levelId,
       startTime: DateTime.now(),
     );
+    _overrideQuestion = null;
     _startQuestionTimer();
     notifyListeners();
   }
@@ -52,6 +58,7 @@ class GameService extends ChangeNotifier {
     _remainingSeconds = questionTimeSeconds;
     _questionStartTime = DateTime.now();
     _isAnswered = false;
+    _overrideQuestion = null;
     _timer?.cancel();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -80,6 +87,8 @@ class GameService extends ChangeNotifier {
       return;
     }
 
+    final Question current = currentQuestion!;
+
     _isAnswered = true;
     _timer?.cancel();
 
@@ -87,11 +96,11 @@ class GameService extends ChangeNotifier {
         .difference(_questionStartTime ?? DateTime.now())
         .inMilliseconds;
 
-    final isCorrect = selectedIndex == currentQuestion!.correctIndex;
+    final isCorrect = selectedIndex == current.correctIndex;
     final points = isCorrect ? _calculatePoints(timeSpentMs) : 0;
 
     final result = QuestionResult(
-      questionId: currentQuestion!.id,
+      questionId: current.id,
       selectedIndex: selectedIndex,
       isCorrect: isCorrect,
       timeSpentMs: timeSpentMs,
@@ -99,6 +108,7 @@ class GameService extends ChangeNotifier {
     );
 
     _currentSession!.addResult(result);
+    _overrideQuestion = current;
     notifyListeners();
   }
 
@@ -143,6 +153,7 @@ class GameService extends ChangeNotifier {
     _remainingSeconds = questionTimeSeconds;
     _questionStartTime = null;
     _isAnswered = false;
+    _overrideQuestion = null;
     notifyListeners();
   }
 
