@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'home_screen.dart';
+import 'game_dashboard_screen.dart';
 import 'bible_screen.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -34,7 +35,7 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     final screens = [
       const HomeScreen(),
-      const HomeScreen(), // Game tab shows home for now
+      const GameDashboardScreen(), // Game tab shows level selection dashboard
       const BibleScreen(),
     ];
 
