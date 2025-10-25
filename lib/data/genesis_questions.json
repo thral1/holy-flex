@@ -1,0 +1,172 @@
+{
+  "questions": [
+    {
+      "id": "gen_01",
+      "text": "What does God's creation of humans 'in His image' primarily teach us?",
+      "choices": [
+        "We should look like God physically",
+        "We have inherent dignity and worth",
+        "We are perfect like God",
+        "We should create things"
+      ],
+      "correctIndex": 1,
+      "explanation": "Being made in God's image means we have inherent value, dignity, and worth as His creation.",
+      "category": "Genesis",
+      "difficulty": 1
+    },
+    {
+      "id": "gen_02",
+      "text": "Why did God rest on the seventh day after creation?",
+      "choices": [
+        "He was tired from working",
+        "To establish a pattern of rest for humans",
+        "He ran out of things to create",
+        "It was a mandatory holiday"
+      ],
+      "correctIndex": 1,
+      "explanation": "God's rest established the Sabbath principle, showing that rest is part of His design for human flourishing.",
+      "category": "Genesis",
+      "difficulty": 1
+    },
+    {
+      "id": "gen_03",
+      "text": "What was the main consequence of Adam and Eve eating the forbidden fruit?",
+      "choices": [
+        "They got a stomach ache",
+        "Separation from God and broken relationship",
+        "They became immortal",
+        "They had to leave the garden to find food"
+      ],
+      "correctIndex": 1,
+      "explanation": "Sin's primary consequence is broken fellowship with God, which affects all of humanity.",
+      "category": "Genesis",
+      "difficulty": 1
+    },
+    {
+      "id": "gen_04",
+      "text": "What does Cain's question 'Am I my brother's keeper?' reveal about his heart?",
+      "choices": [
+        "He was confused about his job duties",
+        "He was genuinely asking for clarification",
+        "He was deflecting responsibility for others",
+        "He wanted to find his brother"
+      ],
+      "correctIndex": 2,
+      "explanation": "Cain's question shows his attempt to avoid responsibility and reveals a heart hardened by sin and selfishness.",
+      "category": "Genesis",
+      "difficulty": 2
+    },
+    {
+      "id": "gen_05",
+      "text": "Why did God flood the earth in Noah's time?",
+      "choices": [
+        "To water the plants",
+        "Humanity had become completely corrupt and violent",
+        "To test Noah's boat-building skills",
+        "The earth was overpopulated"
+      ],
+      "correctIndex": 1,
+      "explanation": "The flood was God's judgment on pervasive evil and violence, while showing mercy to Noah's faithful family.",
+      "category": "Genesis",
+      "difficulty": 1
+    },
+    {
+      "id": "gen_06",
+      "text": "What is the significance of God's covenant (rainbow promise) with Noah?",
+      "choices": [
+        "Rainbows are pretty",
+        "God commits to never destroy all life by flood again",
+        "Noah was a good meteorologist",
+        "It was just a weather phenomenon"
+      ],
+      "correctIndex": 1,
+      "explanation": "The rainbow covenant shows God's faithfulness and His commitment to preserve creation despite human sin.",
+      "category": "Genesis",
+      "difficulty": 1
+    },
+    {
+      "id": "gen_07",
+      "text": "What was wrong with building the Tower of Babel?",
+      "choices": [
+        "The bricks were low quality",
+        "Human pride and attempt to reach heaven by own effort",
+        "The tower was too tall for safety codes",
+        "They didn't have a building permit"
+      ],
+      "correctIndex": 1,
+      "explanation": "Babel represents human pride and the attempt to make a name for ourselves apart from God.",
+      "category": "Genesis",
+      "difficulty": 2
+    },
+    {
+      "id": "gen_08",
+      "text": "What does God's call to Abraham to leave his homeland teach us about faith?",
+      "choices": [
+        "Moving is always good",
+        "Faith means trusting God even when we don't see the full picture",
+        "Abraham didn't like his family",
+        "Travel broadens your mind"
+      ],
+      "correctIndex": 1,
+      "explanation": "Abraham's obedience without knowing the destination demonstrates that faith involves trusting God's promises even when the path is unclear.",
+      "category": "Genesis",
+      "difficulty": 1
+    },
+    {
+      "id": "gen_09",
+      "text": "Why did God ask Abraham to sacrifice Isaac?",
+      "choices": [
+        "God was testing Abraham's faith and devotion",
+        "God needed a sacrifice",
+        "Isaac had done something wrong",
+        "It was a common practice back then"
+      ],
+      "correctIndex": 0,
+      "explanation": "God tested Abraham's faith to demonstrate complete trust, and ultimately provided a ram, foreshadowing God's own sacrifice.",
+      "category": "Genesis",
+      "difficulty": 2
+    },
+    {
+      "id": "gen_10",
+      "text": "What does Jacob wrestling with God and receiving a new name teach us?",
+      "choices": [
+        "Wrestling is good exercise",
+        "Persistence in seeking God transforms us",
+        "Cheating is okay if you win",
+        "God likes sports"
+      ],
+      "correctIndex": 1,
+      "explanation": "Jacob's wrestling shows that earnest pursuit of God leads to transformation and blessing, even when it's difficult.",
+      "category": "Genesis",
+      "difficulty": 2
+    },
+    {
+      "id": "gen_11",
+      "text": "What is the main lesson from Joseph's story of betrayal and rising to power in Egypt?",
+      "choices": [
+        "Dreams always come true literally",
+        "God can work all things for good, even betrayal and hardship",
+        "Brothers are always jealous",
+        "Egypt was a better place to live"
+      ],
+      "correctIndex": 1,
+      "explanation": "Joseph's story demonstrates God's sovereignty and faithfulness, turning evil intentions into good outcomes.",
+      "category": "Genesis",
+      "difficulty": 1
+    },
+    {
+      "id": "gen_12",
+      "text": "What does Joseph forgiving his brothers reveal about God's character?",
+      "choices": [
+        "Grudges are fine to hold",
+        "Forgiveness and reconciliation reflect God's heart",
+        "Family reunions are important",
+        "Money solves all problems"
+      ],
+      "correctIndex": 1,
+      "explanation": "Joseph's forgiveness mirrors God's grace and desire for reconciliation, showing that forgiveness is divine in nature.",
+      "category": "Genesis",
+      "difficulty": 1
+    }
+  ]
+}
