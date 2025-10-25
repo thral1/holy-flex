@@ -185,50 +185,52 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
       children: [
         // Avatar circle with rank
         Container(
-          width: 60,
-          height: 60,
+          width: 50,
+          height: 50,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: color,
             border: Border.all(
               color: AppTheme.cyanAccent,
-              width: 3,
+              width: 2,
             ),
           ),
           child: Center(
             child: Text(
               '$rank',
               style: const TextStyle(
-                fontSize: 28,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.darkBackground,
               ),
             ),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         Text(
           entry.username,
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 11,
             fontWeight: FontWeight.bold,
             color: AppTheme.white,
           ),
           overflow: TextOverflow.ellipsis,
+          maxLines: 1,
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         Text(
           '${entry.score}',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
             color: color,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         // Podium block
         Container(
           height: height,
@@ -253,7 +255,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             child: Icon(
               Icons.emoji_events,
               color: AppTheme.darkBackground.withOpacity(0.3),
-              size: 40,
+              size: 32,
             ),
           ),
         ),
