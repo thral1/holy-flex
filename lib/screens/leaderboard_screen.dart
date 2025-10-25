@@ -148,7 +148,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                 entry: second,
                 rank: 2,
                 color: Colors.grey,
-                height: 120,
+                height: 90,
               ),
             ),
           const SizedBox(width: 8),
@@ -158,7 +158,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               entry: first,
               rank: 1,
               color: Colors.amber,
-              height: 160,
+              height: 120,
             ),
           ),
           const SizedBox(width: 8),
@@ -169,7 +169,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                 entry: third,
                 rank: 3,
                 color: Colors.brown.shade300,
-                height: 100,
+                height: 70,
               ),
             ),
         ],
@@ -189,8 +189,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       children: [
         // Avatar circle with rank
         Container(
-          width: 50,
-          height: 50,
+          width: 45,
+          height: 45,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: color,
@@ -203,18 +203,18 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             child: Text(
               '$rank',
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.darkBackground,
               ),
             ),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 3),
         Text(
           entry.username,
           style: const TextStyle(
-            fontSize: 11,
+            fontSize: 10,
             fontWeight: FontWeight.bold,
             color: AppTheme.white,
           ),
@@ -225,12 +225,12 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         Text(
           '${entry.score}',
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 11,
             fontWeight: FontWeight.bold,
             color: color,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 3),
         // Podium block
         Container(
           height: height,
@@ -255,7 +255,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             child: Icon(
               Icons.emoji_events,
               color: AppTheme.darkBackground.withOpacity(0.3),
-              size: 32,
+              size: 28,
             ),
           ),
         ),
