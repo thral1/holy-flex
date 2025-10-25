@@ -73,15 +73,18 @@ class _GameScreenState extends State<GameScreen> {
           ),
         );
       } else {
-        // CRITICAL: Reset state BEFORE nextQuestion to prevent color bleeding
-        setState(() {
-          _selectedIndex = null;
-          _showingFeedback = false;
-        });
-        // Now advance to next question and update cached question
-        gameService.nextQuestion();
-        setState(() {
-          _currentQuestion = gameService.currentQuestion;
+        // CRITICAL: Reset state and wait before advancing to next question
+        _selectedIndex = null;
+        _showingFeedback = false;
+        setState(() {});
+
+        // Small delay to ensure UI updates with clean state before advancing
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (!mounted) return;
+          gameService.nextQuestion();
+          setState(() {
+            _currentQuestion = gameService.currentQuestion;
+          });
         });
       }
     });
