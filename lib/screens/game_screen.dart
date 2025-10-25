@@ -18,6 +18,7 @@ class _GameScreenState extends State<GameScreen> {
   bool _isLoading = true;
   int? _selectedIndex;
   bool _showingFeedback = false;
+  Question? _currentQuestion;
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _GameScreenState extends State<GameScreen> {
 
       setState(() {
         _isLoading = false;
+        _currentQuestion = gameService.currentQuestion;
       });
     } catch (e) {
       if (mounted) {
@@ -55,13 +57,14 @@ class _GameScreenState extends State<GameScreen> {
     });
 
     gameService.answerQuestion(selectedIndex);
+    final isGameComplete = gameService.isGameComplete;
 
     // Wait 2 seconds then move to next question or results
     Future.delayed(const Duration(milliseconds: 2000), () {
       if (!mounted) return;
 
-      if (gameService.isGameComplete) {
-        // Game is complete, navigate to results immediately
+      if (isGameComplete) {
+        // Game is complete, end the game and navigate to results
         gameService.endGame();
         Navigator.pushReplacement(
           context,
@@ -71,11 +74,12 @@ class _GameScreenState extends State<GameScreen> {
         );
       } else {
         // Reset state FIRST, then advance to next question
-        _selectedIndex = null;
-        _showingFeedback = false;
         gameService.nextQuestion();
-        // Force a rebuild with clean state
-        setState(() {});
+        setState(() {
+          _selectedIndex = null;
+          _showingFeedback = false;
+          _currentQuestion = gameService.currentQuestion;
+        });
       }
     });
   }
@@ -92,9 +96,18 @@ class _GameScreenState extends State<GameScreen> {
             : Consumer<GameService>(
                 builder: (context, gameService, child) {
                   final question = gameService.currentQuestion;
+                  final displayQuestion = question ?? _currentQuestion;
 
-                  // If no question available, just show loading (navigation happens in _handleAnswer)
-                  if (question == null) {
+                  if (question != null && question != _currentQuestion) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (!mounted) return;
+                      setState(() {
+                        _currentQuestion = question;
+                      });
+                    });
+                  }
+
+                  if (displayQuestion == null) {
                     return const SizedBox.shrink();
                   }
 
@@ -103,9 +116,9 @@ class _GameScreenState extends State<GameScreen> {
                       _buildHeader(gameService),
                       _buildProgressBar(gameService),
                       const SizedBox(height: 40),
-                      _buildQuestionCard(question),
+                      _buildQuestionCard(displayQuestion),
                       const SizedBox(height: 40),
-                      _buildAnswerButtons(question, gameService),
+                      _buildAnswerButtons(displayQuestion, gameService),
                     ],
                   );
                 },
@@ -115,8 +128,23 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Widget _buildHeader(GameService gameService) {
-    final currentIndex = gameService.currentSession!.currentQuestionIndex + 1;
-    final totalQuestions = gameService.questions!.length;
+    final totalQuestions = gameService.questions?.length ?? 0;
+    int currentIndex =
+        (gameService.currentSession?.currentQuestionIndex ?? 0) + 1;
+
+    if (_showingFeedback && gameService.isGameComplete) {
+      currentIndex = totalQuestions;
+    }
+
+    if (totalQuestions > 0) {
+      if (currentIndex < 1) {
+        currentIndex = 1;
+      } else if (currentIndex > totalQuestions) {
+        currentIndex = totalQuestions;
+      }
+    } else {
+      currentIndex = 0;
+    }
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
