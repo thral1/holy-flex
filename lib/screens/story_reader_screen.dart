@@ -130,14 +130,17 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: InteractiveViewer(
-                  panEnabled: true,
-                  scaleEnabled: true,
-                  minScale: 1.0,
-                  maxScale: 3.0,
-                  child: Image.asset(
-                    widget.storyPages[_currentPage],
-                    fit: BoxFit.contain,
+                child: Center(
+                  child: InteractiveViewer(
+                    panEnabled: true,
+                    scaleEnabled: true,
+                    minScale: 1.0,
+                    maxScale: 3.0,
+                    child: Image.asset(
+                      widget.storyPages[_currentPage],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
                   ),
                 ),
               ),
