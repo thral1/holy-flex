@@ -7,7 +7,14 @@ import '../theme/app_theme.dart';
 import 'results_screen.dart';
 
 class GameScreen extends StatefulWidget {
-  const GameScreen({super.key});
+  final String? questionsJsonPath;
+  final String? levelTitle;
+
+  const GameScreen({
+    super.key,
+    this.questionsJsonPath,
+    this.levelTitle,
+  });
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -30,10 +37,14 @@ class _GameScreenState extends State<GameScreen> {
     final gameService = Provider.of<GameService>(context, listen: false);
 
     try {
-      final questions = await _questionService.loadQuestions('genesis');
+      // Use custom path if provided, otherwise default to genesis
+      final levelKey = widget.questionsJsonPath ?? 'genesis';
+      final levelName = widget.levelTitle ?? 'genesis';
+
+      final questions = await _questionService.loadQuestions(levelKey);
       final shuffled = _questionService.shuffleQuestions(questions);
 
-      gameService.startGame(shuffled, 'player_1', 'genesis');
+      gameService.startGame(shuffled, 'player_1', levelName);
 
       setState(() {
         _isLoading = false;

@@ -1,0 +1,158 @@
+{
+  "questions": [
+    {
+      "id": "samuel17_q1",
+      "text": "What problem most deeply offends David when he first hears Goliath?",
+      "choices": [
+        "Israel's fear of death",
+        "The risk to Saul's throne",
+        "The insult against the LORD and His people",
+        "The loss of trade with the Philistines"
+      ],
+      "correctIndex": 2,
+      "explanation": "He's provoked that an \"uncircumcised Philistine\" defies \"the armies of the living God.\" (17:26, 36)",
+      "category": "1 Samuel 17",
+      "difficulty": 2
+    },
+    {
+      "id": "samuel17_q2",
+      "text": "Why does Saul initially reject David as a contender?",
+      "choices": [
+        "David isn't an Israelite",
+        "David is too young and inexperienced at war",
+        "David is a shepherd and ritually unclean",
+        "Prophets warned against it"
+      ],
+      "correctIndex": 1,
+      "explanation": "Saul: Goliath is a man of war \"from his youth,\" but David is a youth. (17:33)",
+      "category": "1 Samuel 17",
+      "difficulty": 1
+    },
+    {
+      "id": "samuel17_q3",
+      "text": "David's argument to Saul for why he can face Goliath rests chiefly on…",
+      "choices": [
+        "His sling accuracy",
+        "Prior deliverances from lion and bear by the LORD",
+        "Private training with soldiers",
+        "A secret strategy from Jonathan"
+      ],
+      "correctIndex": 1,
+      "explanation": "He grounds courage in God's past rescues as a pattern for future help. (17:34–37)",
+      "category": "1 Samuel 17",
+      "difficulty": 2
+    },
+    {
+      "id": "samuel17_q4",
+      "text": "Why does David remove Saul's armor?",
+      "choices": [
+        "It is too heavy to lift",
+        "It violates priestly law",
+        "He has not \"tested\" it and chooses what he knows",
+        "Armor would dishonor the LORD"
+      ],
+      "correctIndex": 2,
+      "explanation": "He hasn't proved it; he trusts familiar tools and God's deliverance. (17:38–39)",
+      "category": "1 Samuel 17",
+      "difficulty": 2
+    },
+    {
+      "id": "samuel17_q5",
+      "text": "Goliath's core boast is that victory belongs to…",
+      "choices": [
+        "The gods of the Philistines",
+        "Superior weapons",
+        "The strongest king",
+        "The boldest tribe"
+      ],
+      "correctIndex": 1,
+      "explanation": "He embodies might/weaponry; David counters that \"the battle is the LORD's.\" (17:43–47)",
+      "category": "1 Samuel 17",
+      "difficulty": 2
+    },
+    {
+      "id": "samuel17_q6",
+      "text": "What does David say the outcome will teach \"all the earth\"?",
+      "choices": [
+        "Israel's army is unmatched",
+        "Saul is the true king",
+        "There is a God in Israel who saves without sword or spear",
+        "Giants are mortal after all"
+      ],
+      "correctIndex": 2,
+      "explanation": "Explicit purpose statement. (17:46–47)",
+      "category": "1 Samuel 17",
+      "difficulty": 2
+    },
+    {
+      "id": "samuel17_q7",
+      "text": "What turns Israel's fear into pursuit and victory?",
+      "choices": [
+        "Saul's rousing speech",
+        "David's single faith-act and visible result",
+        "A surprise ambush by Jonathan",
+        "A thunderstorm scatters the Philistines"
+      ],
+      "correctIndex": 1,
+      "explanation": "David's strike triggers Israel's courage; they rise and pursue. (17:51–53)",
+      "category": "1 Samuel 17",
+      "difficulty": 2
+    },
+    {
+      "id": "samuel17_q8",
+      "text": "What most clearly reveals David's motive in fighting?",
+      "choices": [
+        "The promised reward from Saul",
+        "His brothers' honor",
+        "The insult to God's name and the good of God's people",
+        "Proving himself to Saul"
+      ],
+      "correctIndex": 2,
+      "explanation": "He repeats concern for God's honor and Israel's welfare. (17:26, 36, 45–47)",
+      "category": "1 Samuel 17",
+      "difficulty": 2
+    },
+    {
+      "id": "samuel17_q9",
+      "text": "David calls Israel \"the armies of the living God.\" Why is that phrase important here?",
+      "choices": [
+        "It marks Israel as recently victorious",
+        "It frames the fight as God's, so Israel's identity gives courage",
+        "It flatters Saul's leadership",
+        "It mocks Philistine idols only"
+      ],
+      "correctIndex": 1,
+      "explanation": "Naming reshapes identity and courage. (17:26, 36)",
+      "category": "1 Samuel 17",
+      "difficulty": 2
+    },
+    {
+      "id": "samuel17_q10",
+      "text": "Why does David take Goliath's sword to finish the kill?",
+      "choices": [
+        "He ran out of stones",
+        "To show the enemy's weapon cannot save",
+        "Ritual requirement",
+        "To keep a trophy"
+      ],
+      "correctIndex": 1,
+      "explanation": "Thematically echoes \"not by sword or spear\"; the foe's blade seals his defeat. (17:47, 51)",
+      "category": "1 Samuel 17",
+      "difficulty": 2
+    },
+    {
+      "id": "samuel17_q11",
+      "text": "Why is Eliab's outburst significant to the story's meaning?",
+      "choices": [
+        "It foreshadows future family betrayal",
+        "It shows human misreading of godly zeal as pride",
+        "It proves David sought the reward",
+        "It disqualifies David from battle"
+      ],
+      "correctIndex": 1,
+      "explanation": "Eliab mistakes faith for arrogance—common theme in call narratives. (17:28–30)",
+      "category": "1 Samuel 17",
+      "difficulty": 2
+    }
+  ]
+}

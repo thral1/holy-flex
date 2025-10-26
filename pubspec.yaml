@@ -22,3 +22,5 @@ flutter:
   uses-material-design: true
   assets:
     - lib/data/genesis_questions.json
+    - lib/data/samuel_17_questions.json
+    - assets/images/
