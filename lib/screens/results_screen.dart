@@ -433,7 +433,6 @@ class _ResultsScreenState extends State<ResultsScreen>
         alignment: Alignment.center,
         child: _videoReady
             ? Stack(
-                alignment: Alignment.center,
                 children: [
                   SizedBox.expand(
                     child: FittedBox(
@@ -445,30 +444,36 @@ class _ResultsScreenState extends State<ResultsScreen>
                       ),
                     ),
                   ),
-                  AnimatedOpacity(
-                    opacity: _videoController.value.isPlaying ? 1 : 0,
-                    duration: const Duration(milliseconds: 300),
-                    child: ScaleTransition(
-                      scale: _textController,
-                      child: Text(
-                        'HOLY FLEX!',
-                        style: TextStyle(
-                          fontSize: 64,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 6,
-                          color: AppTheme.cyanAccent.withOpacity(0.95),
-                          shadows: const [
-                            Shadow(
-                              blurRadius: 12,
-                              color: Colors.black54,
-                              offset: Offset(0, 4),
-                            ),
-                            Shadow(
-                              blurRadius: 24,
-                              color: Colors.black38,
-                              offset: Offset(0, 0),
-                            ),
-                          ],
+                  Positioned(
+                    top: 60,
+                    left: 0,
+                    right: 0,
+                    child: AnimatedOpacity(
+                      opacity: _videoController.value.isPlaying ? 1 : 0,
+                      duration: const Duration(milliseconds: 300),
+                      child: ScaleTransition(
+                        scale: _textController,
+                        child: Text(
+                          'HOLY FLEX!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 64,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 6,
+                            color: AppTheme.cyanAccent.withOpacity(0.95),
+                            shadows: const [
+                              Shadow(
+                                blurRadius: 12,
+                                color: Colors.black54,
+                                offset: Offset(0, 4),
+                              ),
+                              Shadow(
+                                blurRadius: 24,
+                                color: Colors.black38,
+                                offset: Offset(0, 0),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

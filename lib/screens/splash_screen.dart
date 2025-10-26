@@ -40,11 +40,30 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: Image.asset(
-          'assets/images/home_splash.png',
-          fit: BoxFit.contain,
-        ),
+      body: Stack(
+        children: [
+          SafeArea(
+            child: SizedBox.expand(
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: Image.asset('assets/images/home_splash.png'),
+              ),
+            ),
+          ),
+          // CBS Logo overlay at the top
+          Positioned(
+            top: 80,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Image.asset(
+                'assets/images/cbs_logo.png',
+                width: 160,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
