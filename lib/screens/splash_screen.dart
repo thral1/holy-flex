@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import 'main_navigation.dart';
@@ -12,15 +10,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  static const _splashDuration = Duration(milliseconds: 3000);
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer(_splashDuration, _goToDashboard);
-  }
-
   void _goToDashboard() {
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
@@ -31,39 +20,37 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          SafeArea(
-            child: SizedBox.expand(
-              child: FittedBox(
-                fit: BoxFit.cover,
-                child: Image.asset('assets/images/home_splash.png'),
+      body: GestureDetector(
+        onTap: _goToDashboard,
+        behavior: HitTestBehavior.opaque,
+        child: Stack(
+          children: [
+            SafeArea(
+              child: SizedBox.expand(
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: Image.asset('assets/images/home_splash.png'),
+                ),
               ),
             ),
-          ),
-          // CBS Logo overlay at the top
-          Positioned(
-            top: 80,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Image.asset(
-                'assets/images/cbs_logo.png',
-                width: 160,
-                fit: BoxFit.contain,
+            // CBS Logo overlay at the top
+            Positioned(
+              top: 80,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Image.asset(
+                  'assets/images/cbs_logo.png',
+                  width: 160,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
