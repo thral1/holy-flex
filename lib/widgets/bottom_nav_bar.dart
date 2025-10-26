@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../screens/splash_screen.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -30,18 +31,21 @@ class BottomNavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildNavItem(
+                context: context,
                 icon: Icons.home_rounded,
                 label: 'Dashboard',
                 index: 0,
                 isActive: currentIndex == 0,
               ),
               _buildNavItem(
+                context: context,
                 icon: Icons.sports_esports_rounded,
                 label: 'Game',
                 index: 1,
                 isActive: currentIndex == 1,
               ),
               _buildNavItem(
+                context: context,
                 icon: Icons.menu_book_rounded,
                 label: 'Bible',
                 index: 2,
@@ -55,13 +59,26 @@ class BottomNavBar extends StatelessWidget {
   }
 
   Widget _buildNavItem({
+    required BuildContext context,
     required IconData icon,
     required String label,
     required int index,
     required bool isActive,
   }) {
     return GestureDetector(
-      onTap: () => onTap(index),
+      onTap: () {
+        // Dashboard button (index 0) should go to splash screen
+        if (index == 0) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const SplashScreen(),
+            ),
+            (route) => false,
+          );
+        } else {
+          onTap(index);
+        }
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(

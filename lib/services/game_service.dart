@@ -6,7 +6,7 @@ import '../models/game_session.dart';
 import '../models/question_result.dart';
 
 class GameService extends ChangeNotifier with WidgetsBindingObserver {
-  static const int questionTimeSeconds = 20;
+  static const int questionTimeSeconds = 60;
   static const int basePoints = 1000;
   static const int maxSpeedBonus = 500;
 

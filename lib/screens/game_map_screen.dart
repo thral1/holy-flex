@@ -242,7 +242,7 @@ class _MapSection extends StatelessWidget {
               center: samuel17Pos,
               size: nodes[1].radius * 2,
               child: _SecondaryNode(
-                label: '1 Samuel 17',
+                label: 'David and\nGoliath',
                 onTap: onSamuel17Tap,
               ),
             ),
