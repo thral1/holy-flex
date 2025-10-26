@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/game_service.dart';
 import 'screens/main_navigation.dart';
+import 'screens/splash_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -19,7 +20,7 @@ class HolyFlexApp extends StatelessWidget {
         title: 'Holy Flex',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
-        home: const MainNavigation(),
+        home: const SplashScreen(),
       ),
     );
   }
