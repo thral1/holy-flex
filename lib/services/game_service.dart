@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import '../models/question.dart';
 import '../models/game_session.dart';
 import '../models/question_result.dart';
 
-class GameService extends ChangeNotifier {
+class GameService extends ChangeNotifier with WidgetsBindingObserver {
   static const int questionTimeSeconds = 20;
   static const int basePoints = 1000;
   static const int maxSpeedBonus = 500;
@@ -16,12 +17,68 @@ class GameService extends ChangeNotifier {
   DateTime? _questionStartTime;
   bool _isAnswered = false;
   Question? _overrideQuestion;
+  DateTime? _pausedAt;
+  int? _pausedRemainingSeconds;
+
+  GameService() {
+    WidgetsBinding.instance.addObserver(this);
+  }
 
   GameSession? get currentSession => _currentSession;
   List<Question>? get questions => _questions;
   int get remainingSeconds => _remainingSeconds;
   double get progressPercentage => _remainingSeconds / questionTimeSeconds;
   bool get isAnswered => _isAnswered;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_currentSession == null || _isAnswered) return;
+
+    switch (state) {
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+        // App going to background - pause timer
+        _pauseTimer();
+        break;
+      case AppLifecycleState.resumed:
+        // App returning to foreground - resume timer
+        _resumeTimer();
+        break;
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+        break;
+    }
+  }
+
+  void _pauseTimer() {
+    if (_timer != null && _timer!.isActive) {
+      _pausedAt = DateTime.now();
+      _pausedRemainingSeconds = _remainingSeconds;
+      _timer?.cancel();
+    }
+  }
+
+  void _resumeTimer() {
+    if (_pausedAt != null && _pausedRemainingSeconds != null) {
+      // Resume with the paused remaining time
+      _remainingSeconds = _pausedRemainingSeconds!;
+      _pausedAt = null;
+      _pausedRemainingSeconds = null;
+
+      // Restart timer from where we left off
+      _timer?.cancel();
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        if (_remainingSeconds > 0) {
+          _remainingSeconds--;
+          notifyListeners();
+        } else {
+          timer.cancel();
+          _handleTimeout();
+        }
+      });
+      notifyListeners();
+    }
+  }
 
   Question? get currentQuestion {
     if (_overrideQuestion != null) {
@@ -159,6 +216,7 @@ class GameService extends ChangeNotifier {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
     super.dispose();
   }

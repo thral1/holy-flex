@@ -12,7 +12,7 @@ class QuestionService {
 
     try {
       final String jsonString =
-          await rootBundle.loadString('lib/data/genesis_questions.json');
+          await rootBundle.loadString(levelId);
       final Map<String, dynamic> jsonData = json.decode(jsonString);
       final List<dynamic> questionsJson = jsonData['questions'] as List;
 

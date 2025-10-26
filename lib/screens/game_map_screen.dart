@@ -3,11 +3,13 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'game_screen.dart';
+import 'story_reader_screen.dart';
 
 class GameMapScreen extends StatelessWidget {
   const GameMapScreen({super.key});
 
   void _launchGenesis(BuildContext context) {
+    // For now, launch game directly (no story pages yet for Genesis)
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -17,12 +19,21 @@ class GameMapScreen extends StatelessWidget {
   }
 
   void _launchSamuel17(BuildContext context) {
+    // Launch story reader first
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => const GameScreen(
-          questionsJsonPath: 'lib/data/samuel_17_questions.json',
+        builder: (_) => const StoryReaderScreen(
           levelTitle: '1 Samuel 17',
+          storyPages: [
+            'assets/images/stories/samuel_17/276.jpg',
+            'assets/images/stories/samuel_17/277.jpg',
+            'assets/images/stories/samuel_17/278.jpg',
+            'assets/images/stories/samuel_17/279.jpg',
+            'assets/images/stories/samuel_17/280.jpg',
+            'assets/images/stories/samuel_17/281.jpg',
+          ],
+          questionsJsonPath: 'lib/data/samuel_17_questions.json',
         ),
       ),
     );
