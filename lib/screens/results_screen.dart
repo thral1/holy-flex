@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 import '../services/game_service.dart';
 import '../services/leaderboard_service.dart';
 import '../theme/app_theme.dart';
@@ -13,14 +14,61 @@ class ResultsScreen extends StatefulWidget {
   State<ResultsScreen> createState() => _ResultsScreenState();
 }
 
-class _ResultsScreenState extends State<ResultsScreen> {
+class _ResultsScreenState extends State<ResultsScreen>
+    with SingleTickerProviderStateMixin {
   final LeaderboardService _leaderboardService = LeaderboardService();
   bool _isSaving = false;
+  late final VideoPlayerController _videoController;
+  bool _videoReady = false;
+  bool _showCelebration = true;
+  late final AnimationController _textController;
 
   @override
   void initState() {
     super.initState();
+    _videoController = VideoPlayerController.asset('assets/elijah_ko.mp4')
+      ..setLooping(false);
+    _textController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+      lowerBound: 0.9,
+      upperBound: 1.1,
+    );
+    _videoController.initialize().then((_) {
+      if (!mounted) return;
+      setState(() {
+        _videoReady = true;
+      });
+      _videoController.play();
+      _textController.repeat(reverse: true);
+      _videoController.addListener(() {
+        final value = _videoController.value;
+        if (!value.isPlaying &&
+            value.position >= value.duration &&
+            _showCelebration) {
+          setState(() {
+            _showCelebration = false;
+          });
+          _textController.stop();
+        }
+      });
+    }).catchError((error) {
+      debugPrint('Failed to load celebration video: $error');
+      if (mounted) {
+        setState(() {
+          _showCelebration = false;
+        });
+      }
+      _textController.stop();
+    });
     _saveScore();
+  }
+
+  @override
+  void dispose() {
+    _videoController.dispose();
+    _textController.dispose();
+    super.dispose();
   }
 
   Future<void> _saveScore() async {
@@ -55,8 +103,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
     return Scaffold(
       backgroundColor: AppTheme.darkBackground,
       body: SafeArea(
-        child: Consumer<GameService>(
-          builder: (context, gameService, child) {
+        child: _showCelebration
+            ? _buildCelebration()
+            : Consumer<GameService>(
+              builder: (context, gameService, child) {
             final session = gameService.currentSession;
             if (session == null) {
               return const Center(
@@ -362,6 +412,70 @@ class _ResultsScreenState extends State<ResultsScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCelebration() {
+    return GestureDetector(
+      onTap: () {
+        if (_showCelebration) {
+          setState(() {
+            _showCelebration = false;
+          });
+          _textController.stop();
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.black,
+        alignment: Alignment.center,
+        child: _videoReady
+            ? Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox.expand(
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: SizedBox(
+                        width: _videoController.value.size.width,
+                        height: _videoController.value.size.height,
+                        child: VideoPlayer(_videoController),
+                      ),
+                    ),
+                  ),
+                  AnimatedOpacity(
+                    opacity: _videoController.value.isPlaying ? 1 : 0,
+                    duration: const Duration(milliseconds: 300),
+                    child: ScaleTransition(
+                      scale: _textController,
+                      child: Text(
+                        'HOLY FLEX!',
+                        style: TextStyle(
+                          fontSize: 64,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 6,
+                          color: AppTheme.cyanAccent.withOpacity(0.95),
+                          shadows: const [
+                            Shadow(
+                              blurRadius: 12,
+                              color: Colors.black54,
+                              offset: Offset(0, 4),
+                            ),
+                            Shadow(
+                              blurRadius: 24,
+                              color: Colors.black38,
+                              offset: Offset(0, 0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : const CircularProgressIndicator(color: AppTheme.cyanAccent),
       ),
     );
   }
