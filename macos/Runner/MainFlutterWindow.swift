@@ -7,7 +7,7 @@ class MainFlutterWindow: NSWindow {
     let screen = NSScreen.main
     let screenFrame = screen?.frame ?? NSRect(x: 0, y: 0, width: 2560, height: 1600)
     let scale = screen?.backingScaleFactor ?? 2.0
-    let targetPixelWidth: CGFloat = 1152
+    let targetPixelWidth: CGFloat = 300
     let targetPointWidth = targetPixelWidth / scale
     let targetHeight: CGFloat = 917
     let originX = screenFrame.midX - targetPointWidth / 2
