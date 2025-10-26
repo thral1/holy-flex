@@ -44,7 +44,12 @@ class _GameScreenState extends State<GameScreen> {
       final questions = await _questionService.loadQuestions(levelKey);
       final shuffled = _questionService.shuffleQuestions(questions);
 
-      gameService.startGame(shuffled, 'player_1', levelName);
+      gameService.startGame(
+        shuffled,
+        'player_1',
+        levelKey,
+        levelName,
+      );
 
       setState(() {
         _isLoading = false;

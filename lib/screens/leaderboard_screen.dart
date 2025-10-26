@@ -4,7 +4,14 @@ import '../models/leaderboard_entry.dart';
 import '../theme/app_theme.dart';
 
 class LeaderboardScreen extends StatefulWidget {
-  const LeaderboardScreen({super.key});
+  final String levelId;
+  final String levelTitle;
+
+  const LeaderboardScreen({
+    super.key,
+    this.levelId = 'genesis',
+    this.levelTitle = 'Genesis',
+  });
 
   @override
   State<LeaderboardScreen> createState() => _LeaderboardScreenState();
@@ -23,7 +30,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 
   Future<void> _loadLeaderboard() async {
     try {
-      final entries = await _leaderboardService.getLeaderboard('genesis');
+      final entries = await _leaderboardService.getLeaderboard(widget.levelId);
       setState(() {
         _entries = entries;
         _isLoading = false;
@@ -87,9 +94,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               : Column(
                   children: [
                     const SizedBox(height: 16),
-                    const Text(
-                      'GENESIS LEVEL',
-                      style: TextStyle(
+                    Text(
+                      '${widget.levelTitle.toUpperCase()} LEVEL',
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: AppTheme.cyanAccent,

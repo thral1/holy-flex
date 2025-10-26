@@ -18,43 +18,30 @@ class LeaderboardService {
       completedAt: session.endTime ?? DateTime.now(),
     );
 
-    final entries = await getLeaderboard(session.levelId);
-    entries.add(entry);
+    final allEntries = await _readAllEntries();
+    allEntries.add(entry);
 
-    // Sort by score descending
-    entries.sort((a, b) => b.score.compareTo(a.score));
+    final grouped = <String, List<LeaderboardEntry>>{};
+    for (final e in allEntries) {
+      grouped.putIfAbsent(e.levelId, () => []).add(e);
+    }
 
-    // Keep only top entries
-    final topEntries = entries.take(_maxEntries).toList();
+    final trimmedEntries = <LeaderboardEntry>[];
+    for (final levelEntries in grouped.values) {
+      levelEntries.sort((a, b) => b.score.compareTo(a.score));
+      trimmedEntries.addAll(levelEntries.take(_maxEntries));
+    }
 
-    final jsonList = topEntries.map((e) => e.toJson()).toList();
+    final jsonList = trimmedEntries.map((e) => e.toJson()).toList();
     await prefs.setString(_leaderboardKey, json.encode(jsonList));
   }
 
   Future<List<LeaderboardEntry>> getLeaderboard(String levelId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final jsonString = prefs.getString(_leaderboardKey);
-
-    if (jsonString == null) {
-      return [];
-    }
-
-    try {
-      final List<dynamic> jsonList = json.decode(jsonString);
-      final allEntries = jsonList
-          .map((e) => LeaderboardEntry.fromJson(e as Map<String, dynamic>))
-          .toList();
-
-      // Filter by level and sort
-      final levelEntries = allEntries
-          .where((entry) => entry.levelId == levelId)
-          .toList();
-
-      levelEntries.sort((a, b) => b.score.compareTo(a.score));
-      return levelEntries;
-    } catch (e) {
-      return [];
-    }
+    final allEntries = await _readAllEntries();
+    final levelEntries =
+        allEntries.where((entry) => entry.levelId == levelId).toList()
+          ..sort((a, b) => b.score.compareTo(a.score));
+    return levelEntries;
   }
 
   Future<int?> getUserRank(String userId, String levelId) async {
@@ -72,5 +59,29 @@ class LeaderboardService {
   Future<void> clearLeaderboard() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_leaderboardKey);
+  }
+
+  Future<List<LeaderboardEntry>> getAllEntries() async {
+    final entries = await _readAllEntries();
+    entries.sort((a, b) => b.score.compareTo(a.score));
+    return entries;
+  }
+
+  Future<List<LeaderboardEntry>> _readAllEntries() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString(_leaderboardKey);
+
+    if (jsonString == null) {
+      return [];
+    }
+
+    try {
+      final List<dynamic> jsonList = json.decode(jsonString);
+      return jsonList
+          .map((e) => LeaderboardEntry.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      return [];
+    }
   }
 }

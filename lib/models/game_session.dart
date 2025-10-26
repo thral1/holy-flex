@@ -4,6 +4,7 @@ class GameSession {
   final String sessionId;
   final String userId;
   final String levelId;
+  final String levelName;
   int currentQuestionIndex;
   int correctAnswers;
   int totalScore;
@@ -15,6 +16,7 @@ class GameSession {
     required this.sessionId,
     required this.userId,
     required this.levelId,
+    required this.levelName,
     this.currentQuestionIndex = 0,
     this.correctAnswers = 0,
     this.totalScore = 0,
@@ -43,6 +45,7 @@ class GameSession {
       'sessionId': sessionId,
       'userId': userId,
       'levelId': levelId,
+      'levelName': levelName,
       'currentQuestionIndex': currentQuestionIndex,
       'correctAnswers': correctAnswers,
       'totalScore': totalScore,
@@ -57,6 +60,7 @@ class GameSession {
       sessionId: json['sessionId'] as String,
       userId: json['userId'] as String,
       levelId: json['levelId'] as String,
+      levelName: (json['levelName'] as String?) ?? (json['levelId'] as String),
       currentQuestionIndex: json['currentQuestionIndex'] as int,
       correctAnswers: json['correctAnswers'] as int,
       totalScore: json['totalScore'] as int,

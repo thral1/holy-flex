@@ -98,12 +98,18 @@ class GameService extends ChangeNotifier with WidgetsBindingObserver {
     return _currentSession!.currentQuestionIndex >= _questions!.length;
   }
 
-  void startGame(List<Question> questions, String userId, String levelId) {
+  void startGame(
+    List<Question> questions,
+    String userId,
+    String levelId,
+    String levelName,
+  ) {
     _questions = questions;
     _currentSession = GameSession(
       sessionId: DateTime.now().millisecondsSinceEpoch.toString(),
       userId: userId,
       levelId: levelId,
+      levelName: levelName,
       startTime: DateTime.now(),
     );
     _overrideQuestion = null;
