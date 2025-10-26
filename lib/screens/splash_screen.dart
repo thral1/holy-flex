@@ -12,7 +12,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  static const _splashDuration = Duration(milliseconds: 1500);
+  static const _splashDuration = Duration(milliseconds: 3000);
   Timer? _timer;
 
   @override
@@ -40,12 +40,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SafeArea(
-        child: SizedBox.expand(
-          child: FittedBox(
-            fit: BoxFit.cover,
-            child: Image.asset('assets/images/home_splash.png'),
-          ),
+      body: Center(
+        child: Image.asset(
+          'assets/images/home_splash.png',
+          fit: BoxFit.contain,
         ),
       ),
     );
