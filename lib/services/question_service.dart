@@ -7,9 +7,9 @@ class QuestionService {
 
   static const String _samuel17Path = 'lib/data/samuel_17_questions.json';
   static const List<String> _samuel17TempQuestionIds = [
-    'samuel17_q1',
-    'samuel17_q5',
-    'samuel17_q9',
+    'samuel17_q5', // Goliath's core boast...
+    'samuel17_q1', // What problem most deeply offends David...
+    'samuel17_q9', // David calls Israel...
   ];
 
   Future<List<Question>> loadQuestions(String levelId) async {
@@ -27,9 +27,13 @@ class QuestionService {
           .toList();
 
       if (levelId == _samuel17Path) {
-        questions = questions
-            .where((q) => _samuel17TempQuestionIds.contains(q.id))
-            .toList();
+        // Maintain specific order for David and Goliath questions
+        final orderedQuestions = <Question>[];
+        for (final id in _samuel17TempQuestionIds) {
+          final question = questions.firstWhere((q) => q.id == id);
+          orderedQuestions.add(question);
+        }
+        questions = orderedQuestions;
       }
 
       _cache[levelId] = questions;
@@ -40,6 +44,14 @@ class QuestionService {
   }
 
   List<Question> shuffleQuestions(List<Question> questions) {
+    // Don't shuffle David and Goliath questions - they have a specific order
+    if (questions.length == 3 &&
+        questions.any((q) => q.id == 'samuel17_q5') &&
+        questions.any((q) => q.id == 'samuel17_q1') &&
+        questions.any((q) => q.id == 'samuel17_q9')) {
+      return questions;
+    }
+
     final shuffled = List<Question>.from(questions);
     shuffled.shuffle();
     return shuffled;

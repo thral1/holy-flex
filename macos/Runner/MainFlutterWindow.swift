@@ -4,17 +4,19 @@ import FlutterMacOS
 class MainFlutterWindow: NSWindow {
   override func awakeFromNib() {
     let flutterViewController = FlutterViewController()
-    let screen = NSScreen.main
-    let screenFrame = screen?.frame ?? NSRect(x: 0, y: 0, width: 2560, height: 1600)
-    let scale = screen?.backingScaleFactor ?? 2.0
-    let targetPixelWidth: CGFloat = 300
-    let targetPointWidth = targetPixelWidth / scale
-    let targetHeight: CGFloat = 917
-    let originX = screenFrame.midX - targetPointWidth / 2
-    let originY = screenFrame.midY - targetHeight / 2
-    let fixedFrame = NSRect(x: originX, y: originY, width: targetPointWidth, height: targetHeight)
-    self.setFrame(fixedFrame, display: true)
     self.contentViewController = flutterViewController
+
+    // Set window to be narrower (600pt) and vertically maximized
+    if let screen = NSScreen.main {
+      let screenFrame = screen.visibleFrame // Use visibleFrame to respect menu bar and dock
+      let width: CGFloat = 600
+      let height = screenFrame.height
+      let x = screenFrame.midX - width / 2
+      let y = screenFrame.minY
+
+      let newFrame = NSRect(x: x, y: y, width: width, height: height)
+      self.setFrame(newFrame, display: true)
+    }
 
     RegisterGeneratedPlugins(registry: flutterViewController)
 
