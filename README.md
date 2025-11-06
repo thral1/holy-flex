@@ -1,6 +1,6 @@
 # Holy Flex
 
-A Bible quiz game built with Flutter that challenges players to test their knowledge of Scripture through engaging, timed questions.
+Holy Flex is an asynchronous multiplayer Bible quiz game built with Flutter - think "Words with Friends" meets Scripture knowledge. Challenge your friends or family to head-to-head Bible trivia battles that you can play on your own schedule.
 
 ## Screenshots
 
@@ -32,12 +32,11 @@ A Bible quiz game built with Flutter that challenges players to test their knowl
   - More levels coming soon
 - **Scoring System**: Earn 1000 points per correct answer
 - **Beautiful UI**: Modern dark theme with cyan accents
-- **Canadian Bible Society**: Official partnership and branding
 
 ## Game Screens
 
 ### Splash Screen
-- Welcome screen with CBS (Canadian Bible Society) logo
+- Welcome screen with app branding
 - Tap anywhere to continue to the dashboard
 
 ### Dashboard
@@ -176,14 +175,13 @@ Questions are stored in JSON files in `lib/data/`. Example format:
 
 ## Contributing
 
-This is a Canadian Bible Society project. For contributions or questions, please open an issue or pull request.
+For contributions or questions, please open an issue or pull request.
 
 ## License
 
-Copyright © 2025 Canadian Bible Society. All rights reserved.
+Copyright © 2025. All rights reserved.
 
 ## Acknowledgments
 
-- Canadian Bible Society for partnership and content
 - Bible story illustrations from FreeBibleImages
 - Flutter team for the amazing framework
