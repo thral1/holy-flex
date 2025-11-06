@@ -2,13 +2,25 @@
 
 A Bible quiz game built with Flutter that challenges players to test their knowledge of Scripture through engaging, timed questions.
 
-## Demo
+## Screenshots
 
-![Holy Flex Demo](./holy_flex_demo.mp4)
+<p align="center">
+  <img src="./docs/screenshots/3screen.png" alt="Main Screens" width="800">
+  <br>
+  <em>Splash Screen, Game Map, and Quiz Interface</em>
+</p>
 
-*Watch the 36-second demo to see Holy Flex in action*
+<p align="center">
+  <img src="./docs/screenshots/game_animation.png" alt="Game Animation" width="400">
+  <br>
+  <em>HOLY FLEX Celebration Animation</em>
+</p>
 
-> **Note**: If the video doesn't play inline, you can [download it here](./holy_flex_demo.mp4) or view it in GitHub releases.
+<p align="center">
+  <img src="./docs/screenshots/end.png" alt="Results Screen" width="400">
+  <br>
+  <em>Results and Score Breakdown</em>
+</p>
 
 ## Features
 
